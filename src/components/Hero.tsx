@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useState } from 'react';
+import { useCart } from '../context/CartContext';
 
 export default function Hero() {
   const { scrollY } = useScroll();
@@ -8,6 +9,7 @@ export default function Hero() {
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   const [isOpen, setIsOpen] = useState(false);
+  const { addToCart } = useCart();
 
   return (
     <section className="relative h-screen w-full flex items-center justify-center overflow-hidden pt-20">
@@ -164,8 +166,11 @@ export default function Hero() {
           <p className="font-sans text-xs md:text-sm text-white/60 max-w-[250px] leading-relaxed hidden md:block">
             Interact with the bottle to release the essence of Aura. A symphony of rare botanicals and deep amber.
           </p>
-          <button className="mt-6 px-8 py-4 border border-gold-500/40 text-gold-400 font-sans text-xs tracking-[0.2em] uppercase hover:bg-gold-500 hover:text-black transition-all duration-500 backdrop-blur-sm bg-black/20">
-            Add to Cart — $240
+          <button 
+            onClick={() => addToCart(1)}
+            className="mt-6 px-8 py-4 border border-gold-500/40 text-gold-400 font-sans text-xs tracking-[0.2em] uppercase hover:bg-gold-500 hover:text-black transition-all duration-500 backdrop-blur-sm bg-black/20"
+          >
+            Add to Cart — $280
           </button>
         </motion.div>
       </div>

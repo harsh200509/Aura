@@ -1,35 +1,7 @@
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef } from 'react';
-
-const products = [
-  {
-    id: 1,
-    name: "AURA NOIR",
-    category: "Extrait de Parfum",
-    price: "$280",
-    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?q=80&w=1000&auto=format&fit=crop",
-    accent: "from-zinc-800 to-black",
-    yOffset: [100, -100]
-  },
-  {
-    id: 2,
-    name: "AURA BLANC",
-    category: "Eau de Parfum",
-    price: "$210",
-    image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?q=80&w=1000&auto=format&fit=crop",
-    accent: "from-zinc-200 to-zinc-400",
-    yOffset: [250, -250]
-  },
-  {
-    id: 3,
-    name: "AURA ROUGE",
-    category: "Limited Edition",
-    price: "$320",
-    image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?q=80&w=1000&auto=format&fit=crop",
-    accent: "from-red-900 to-black",
-    yOffset: [150, -150]
-  }
-];
+import { products } from '../data/products';
+import { useCart } from '../context/CartContext';
 
 export default function ProductGrid() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -37,6 +9,8 @@ export default function ProductGrid() {
     target: containerRef,
     offset: ["start end", "end start"]
   });
+  
+  const { addToCart } = useCart();
 
   return (
     <section ref={containerRef} className="py-32 px-6 md:px-16 bg-ink relative overflow-hidden">
@@ -101,7 +75,13 @@ export default function ProductGrid() {
                   
                   {/* Quick Add Button */}
                   <div className="absolute bottom-0 left-0 w-full p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500 z-20 ease-out">
-                    <button className="w-full py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-sans text-xs tracking-widest uppercase hover:bg-gold-500 hover:text-black hover:border-gold-500 transition-all duration-300">
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product.id);
+                      }}
+                      className="w-full py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-sans text-xs tracking-widest uppercase hover:bg-gold-500 hover:text-black hover:border-gold-500 transition-all duration-300"
+                    >
                       Quick Add
                     </button>
                   </div>
@@ -112,7 +92,7 @@ export default function ProductGrid() {
                     <h3 className="font-serif text-2xl text-white mb-2">{product.name}</h3>
                     <p className="font-sans text-xs text-white/50 uppercase tracking-widest">{product.category}</p>
                   </div>
-                  <p className="font-sans text-sm text-gold-400 mt-1">{product.price}</p>
+                  <p className="font-sans text-sm text-gold-400 mt-1">${product.price}</p>
                 </div>
               </motion.div>
             );
